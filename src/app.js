@@ -39,7 +39,7 @@ const options = {
         },
         servers: [
             {
-                url: `${baseUrl}/ecommerce/api/v1`,
+                url: `abc/ecommerce/api/v1`,
             },
         ],
     },
