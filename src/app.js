@@ -10,12 +10,12 @@ const path = require('path');
 const connectToMongoDB = require("./config/db.config");
 const routes = require("./routes");
 const handleError = require("./middlewares/errorHandler");
-const { port } = require('./config');
+const { port, baseUrl } = require('./config');
 
 const app = express();
 connectToMongoDB();
 app.use(morgan("tiny"));
-app.use(cors({origin:'http://localhost:3000'}));
+app.use(cors({origin: baseUrl}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(compression());
@@ -44,7 +44,7 @@ const options = {
         },
         servers: [
             {
-                url: `http://localhost:${port}/ecommerce/api/v1`,
+                url: `${baseUrl}/ecommerce/api/v1`,
             },
         ],
     },
