@@ -1,10 +1,12 @@
 const express = require("express");
+const ejs = require('ejs');
 const morgan = require("morgan");
 const cors = require("cors");
 const compression = require('compression');
 const helmet = require('helmet');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
+const path = require('path');
 const connectToMongoDB = require("./config/db.config");
 const routes = require("./routes");
 const handleError = require("./middlewares/errorHandler");
@@ -18,6 +20,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 app.use(helmet());
+app.use(express.static(path.join(__dirname, "./public")));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname,'/views'));
 
 const options = {
     definition: {
