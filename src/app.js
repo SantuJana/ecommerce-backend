@@ -7,10 +7,12 @@ const helmet = require('helmet');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const path = require('path');
+const session = require('express-session');
 const connectToMongoDB = require("./config/db.config");
 const routes = require("./routes");
 const handleError = require("./middlewares/errorHandler");
-const { port, baseUrl } = require('./config');
+const { sessionSecret, baseUrl } = require('./config');
+console.log(baseUrl);
 
 const app = express();
 connectToMongoDB();
@@ -21,6 +23,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 app.use(helmet());
 app.use(express.static(path.join(__dirname, "./public")));
+app.use(session({
+    name: "leptyn_backend",
+    secret: "561vgvdy2767yhbew98w8dhwhvedw7",
+    cookie: { maxAge: 6000000 },
+    resave: true,
+    saveUninitialized: true,
+  }
+));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname,'/views'));
 
