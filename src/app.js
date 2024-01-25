@@ -2,6 +2,8 @@ const express = require("express");
 const ejs = require('ejs');
 const morgan = require("morgan");
 const cors = require("cors");
+const flash = require('express-flash');
+const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const helmet = require('helmet');
 const swaggerUi = require('swagger-ui-express');
@@ -11,8 +13,7 @@ const session = require('express-session');
 const connectToMongoDB = require("./config/db.config");
 const routes = require("./routes");
 const handleError = require("./middlewares/errorHandler");
-const { sessionSecret, baseUrl } = require('./config');
-console.log(baseUrl);
+const { sessionSecret, sessionTime, baseUrl } = require('./config');
 
 const app = express();
 connectToMongoDB();
@@ -23,14 +24,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 app.use(helmet());
 app.use(express.static(path.join(__dirname, "./public")));
+app.use(cookieParser());
 app.use(session({
-    name: "leptyn_backend",
-    secret: "561vgvdy2767yhbew98w8dhwhvedw7",
-    cookie: { maxAge: 6000000 },
+    key: "jmv_backend",
+    secret: sessionSecret,
     resave: true,
-    saveUninitialized: true,
-  }
+    saveUninitialized: false,
+    cookie: { expires: sessionTime * 60 * 1000 },
+}
 ));
+app.use(flash());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname,'/views'));
 
