@@ -4,13 +4,14 @@ const adminRoutes = require("./admin.route");
 
 const router = express.Router();
 
+
 router.get("/", (req, res) => {
-    res.redirect('/ecommerce/admin/v1');
+    res.redirect('/admin/dashboard');
 });
-router.use("/ecommerce/api/v1", apiRoutes);
-router.use("/ecommerce/admin/v1", adminRoutes);
+router.use("/api", apiRoutes);
+router.use("/admin", adminRoutes);
 router.all("*", (req, res) => {
-  res.send("page not found");
+  res.render("pages/404");
 });
 
 module.exports = router;
