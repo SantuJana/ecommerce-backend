@@ -31,9 +31,14 @@ userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        status: {
+            type: String,
+            enum: ['active', 'inactive'],
+            default: 'active',
+        },
         tokens: [{ token: String }],
     },
-    { timesStamps: true }
+    { timestamps: true }
 );
 
 userSchema.methods.signToken = async function(){
