@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(session({
     key: "jmv_backend",
     secret: sessionSecret,
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     cookie: { expires: sessionTime * 60 * 1000 },
 }
