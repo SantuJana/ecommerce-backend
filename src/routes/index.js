@@ -10,8 +10,5 @@ router.get("/", (req, res) => {
 });
 router.use("/api", apiRoutes);
 router.use("/admin", adminRoutes);
-router.all("*", (req, res) => {
-  res.render("pages/404");
-});
 
 module.exports = router;
