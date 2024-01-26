@@ -13,7 +13,8 @@ const session = require('express-session');
 const connectToMongoDB = require("./config/db.config");
 const routes = require("./routes");
 const handleError = require("./middlewares/errorHandler");
-const { sessionSecret, sessionTime, baseUrl } = require('./config');
+const MongoDBStore = require('connect-mongodb-session')(session);
+const { sessionSecret, sessionTime, baseUrl, dbUrl } = require('./config');
 
 const app = express();
 connectToMongoDB();
@@ -25,12 +26,17 @@ app.use(compression());
 app.use(helmet());
 app.use(express.static(path.join(__dirname, "./public")));
 app.use(cookieParser());
+const store = new MongoDBStore({
+    uri: dbUrl,
+    collection: 'sessions'
+  });
 app.use(session({
     key: "jmv_backend",
     secret: sessionSecret,
     resave: false,
     saveUninitialized: false,
     cookie: { expires: sessionTime * 60 * 1000 },
+    store: store,
 }
 ));
 app.use(flash());
