@@ -44,11 +44,11 @@
                             </div>
                         </div>
                         <div class="card-body border-bottom-dashed border-bottom">
-                            <form>
+                            <form action="" method="get">
                                 <div class="row g-3">
                                     <div class="col-xl-6">
                                         <div class="search-box">
-                                            <input type="text" class="form-control search" placeholder="Search for customer, email, phone, status or something...">
+                                            <input type="text" class="form-control search" name="search" value="<%= search %>" placeholder="Search for customer, email, phone, status or something...">
                                             <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>
@@ -57,17 +57,16 @@
                                         <div class="row g-3">
                                             <div class="col-sm-4">
                                                 <div class="">
-                                                    <input type="text" class="form-control" id="datepicker-range" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" placeholder="Select date">
+                                                    <input type="text" class="form-control" value="<%= date %>" id="datepicker-range" name="date" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" placeholder="Select date">
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-sm-4">
                                                 <div>
-                                                    <select class="form-control" data-plugin="choices" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                        <option value="">Status</option>
-                                                        <option value="all" selected>All</option>
-                                                        <option value="Active">Active</option>
-                                                        <option value="Block">Block</option>
+                                                    <select class="form-control" data-plugin="choices" data-choices data-choices-search-false name="status">
+                                                        <option value="all" <% if (status == 'all') { %>selected<% } %>>All</option>
+                                                        <option value="active" <% if (status == 'active') { %>selected<% } %>>Active</option>
+                                                        <option value="inactive" <% if (status == 'inactive') { %>selected<% } %>>Inactive</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -75,7 +74,7 @@
 
                                             <div class="col-sm-4">
                                                 <div>
-                                                    <button type="button" class="btn btn-primary w-100" onclick="SearchData();"> <i class="ri-equalizer-fill me-2 align-bottom"></i>Filters</button>
+                                                    <button type="submit" class="btn btn-primary w-100" > <i class="ri-equalizer-fill me-2 align-bottom"></i>Filters</button>
                                                 </div>
                                             </div>
                                             <!--end col-->
@@ -118,7 +117,11 @@
                                                     <td class="email"><%= customer.email %></td>
                                                     <td class="phone"><%= customer.phone %></td>
                                                     <td class="date"><%= moment(customer.createdAt).format('YYYY-MM-DD') %></td>
-                                                    <td class="status"><span class="badge bg-success-subtle text-success text-uppercase"><%= customer.status %></span>
+                                                    <td class="status form-switch-md">
+                                                        <!-- Base Switchs -->
+                                                        <div class="form-check border-danger form-check-success form-switch">
+                                                            <input class="form-check-input status-switch" data-value="<%= customer._id %>" type="checkbox" role="switch" id="flexSwitchCheckDefault" <% if (customer?.status === 'active') { %>checked<% } %>>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <ul class="list-inline hstack gap-2 mb-0">
@@ -128,7 +131,7 @@
                                                                 </a>
                                                             </li>
                                                             <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Remove">
-                                                                <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteRecordModal">
+                                                                <a class="text-danger d-inline-block remove-item-btn" data-value="<%= customer._id %>" data-bs-toggle="modal" href="#deleteRecordModal">
                                                                     <i class="ri-delete-bin-5-fill fs-16"></i>
                                                                 </a>
                                                             </li>
@@ -236,4 +239,5 @@
     <!-- End Page-content -->
 </div>
 
+<script src="/assets/js/pages/customer.js" ></script>
 <%- include('../../partials/footer') %>

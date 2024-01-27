@@ -6,6 +6,7 @@ const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const helmet = require('helmet');
+const paginate = require('express-paginate');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const path = require('path');
@@ -26,6 +27,7 @@ app.use(compression());
 app.use(helmet());
 app.use(express.static(path.join(__dirname, "./public")));
 app.use(cookieParser());
+app.use(paginate.middleware(10, 50))
 const store = new MongoDBStore({
     uri: dbUrl,
     collection: 'sessions'

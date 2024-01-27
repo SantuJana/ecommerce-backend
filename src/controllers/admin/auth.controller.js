@@ -1,6 +1,9 @@
 const AdminModel = require('../../models/admin.model')
 
 const view = async (req, res) => {
+    if (req.session.admin && req.cookies){
+        res.redirect('../dashboard')
+    }
     return res.render("pages/signin",{
         success: req.flash('success'),
         errors: req.flash('errors'),
