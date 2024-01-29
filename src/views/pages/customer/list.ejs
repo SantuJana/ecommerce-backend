@@ -134,6 +134,9 @@
                                                                 <a class="text-danger d-inline-block remove-item-btn" data-value="<%= customer._id %>" data-bs-toggle="modal" href="#deleteRecordModal">
                                                                     <i class="ri-delete-bin-5-fill fs-16"></i>
                                                                 </a>
+                                                                <form action="/admin/customer/delete" method="post" id="deleteForm_<%= customer._id %>">
+                                                                    <input type="text" name="id" id="" value="<%= customer._id %>" hidden>
+                                                                </form>
                                                             </li>
                                                         </ul>
                                                     </td>

@@ -5,17 +5,7 @@ $('.remove-item-btn').click(function(){
 
 $('#deleteRecordModal #delete-record').click(function(){
     const idToBeDelete = $(this).data('value')
-    $.ajax({
-        url: '',
-        type: 'DELETE',
-        data: { id: idToBeDelete },
-        success: (res) => {
-
-        },
-        error: (err) => {
-            console.log('Error to delete record: ', err.message);
-        }
-    })
+    $(`#deleteForm_${idToBeDelete}`).submit()
 })
 
 // $('#deleteRecordModal').on('hidden-bs-modal', function(){

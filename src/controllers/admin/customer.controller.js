@@ -6,25 +6,8 @@ const list = async (req, res) => {
     const search = req?.query?.search || ''
     const date = req?.query?.date || ''
     const status = req?.query?.status || 'all'
-    let condition = {
-        $and:[
 
-        ]
-    }
-
-    if ( search && search !== '' ) {
-        condition.$and.push({
-            $expr: {
-                $regex: {
-                    input: { $concat: [ '$firstName', ' ', '$lastName' ] },
-                    regex: search,
-                    options: 'i',
-                }
-            }
-        })
-    }
-
-    const customers = await CustomerModel.find({
+    let [customerArray, itemCount] = await Promise.all([ CustomerModel.find({
         $and: [
             {$expr: {
                 $regexMatch: {
@@ -37,9 +20,11 @@ const list = async (req, res) => {
                 status: {$in: status === 'all' ? ['active', 'inactive'] : [status]}
             }
         ]
-    })
+        }).skip((page - 1) * limit).limit(limit),
+        CustomerModel.find({}).count()
+    ])
     res.render('pages/customer/list', {
-        customers,
+        customers: customerArray,
         page,
         limit,
         search,
@@ -58,7 +43,7 @@ const toggleStatus = async (req, res) => {
 }
 
 const deleteCustomer = async (req, res) => {
-    console.log('del');
+    console.log('del: ', req?.body?.id);
     // await CustomerModel.findByIdAndDelete(req?.body?.id)
     res.redirect('/admin/customer')
 }
