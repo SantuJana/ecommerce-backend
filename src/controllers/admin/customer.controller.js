@@ -58,9 +58,9 @@ const toggleStatus = async (req, res) => {
 }
 
 const deleteCustomer = async (req, res) => {
-    console.log('id: ', req?.body?.id);
-    await CustomerModel.findByIdAndDelete(req?.body?.id)
-    res.redirect('')
+    console.log('del');
+    // await CustomerModel.findByIdAndDelete(req?.body?.id)
+    res.redirect('/admin/customer')
 }
 
 module.exports = {
