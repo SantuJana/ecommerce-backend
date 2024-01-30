@@ -7,22 +7,35 @@ const list = async (req, res) => {
     const date = req?.query?.date || ''
     const status = req?.query?.status || 'all'
 
-    let [customerArray, itemCount] = await Promise.all([ CustomerModel.find({
-        $and: [
-            {$expr: {
-                $regexMatch: {
-                    input: { $concat: [ '$firstName', ' ', '$lastName' ] },
-                    regex: search,
-                    options: 'i',
-                }
-            }},
+    let [customerArray, itemCount] = await Promise.all([ 
+        CustomerModel.aggregate([
             {
-                status: {$in: status === 'all' ? ['active', 'inactive'] : [status]}
-            }
-        ]
-        }).skip((page - 1) * limit).limit(limit),
+                $addFields: {
+                    fullName: {$concat:[{$ifNull:['$firstName', '']}, ' ', {$ifNull:['$lastName', '']}]}
+                }
+            },
+            {
+                $match: {
+                    $and: [
+                        {$expr: {
+                            $regexMatch: {
+                                input: '$fullName',
+                                regex: search,
+                                options: 'i',
+                            }
+                        }},
+                        {
+                            status: {$in: status === 'all' ? ['active', 'inactive'] : [status]}
+                        }
+                    ]
+                }
+            },
+            { $skip: (page - 1) * limit},
+            { $limit: limit },
+        ]),
         CustomerModel.find({}).count()
     ])
+    const pageCount = Math.ceil(itemCount / limit);
     res.render('pages/customer/list', {
         customers: customerArray,
         page,
@@ -30,6 +43,9 @@ const list = async (req, res) => {
         search,
         date,
         status,
+        pageCount,
+        itemCount,
+        // pages: paginate.getArrayPages(req)(3, pageCount, page),
         success: req.flash('success'),
         error: req.flash('error')
     })

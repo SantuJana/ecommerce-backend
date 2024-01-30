@@ -113,7 +113,7 @@
                                                         </div>
                                                     </th>
                                                     <td class="id" style="display:none;"><a href="javascript:void(0);" class="fw-medium link-primary">#VZ2101</a></td>
-                                                    <td class="customer_name"><%= customer.firstName + ' ' + customer.lastName %></td>
+                                                    <td class="customer_name"><%= customer.fullName %></td>
                                                     <td class="email"><%= customer.email %></td>
                                                     <td class="phone"><%= customer.phone %></td>
                                                     <td class="date"><%= moment(customer.createdAt).format('YYYY-MM-DD') %></td>
@@ -154,13 +154,18 @@
                                         </div>
                                     <% } %>
                                 </div>
+                                <%= hasNextPages %>
                                 <% if (customers?.length > 0) { %>
                                     <div class="d-flex justify-content-end">
                                         <div class="pagination-wrap hstack gap-2">
                                             <a class="page-item pagination-prev disabled" href="#">
                                                 Previous
                                             </a>
-                                            <ul class="pagination listjs-pagination mb-0"></ul>
+                                            <ul class="pagination listjs-pagination mb-0">
+                                                <li class="active"><a href="" class="page">1</a></li>
+                                                <li class=""><a href="" class="page">2</a></li>
+                                                <li class=""><a href="" class="page">3</a></li>
+                                            </ul>
                                             <a class="page-item pagination-next" href="#">
                                                 Next
                                             </a>
