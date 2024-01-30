@@ -95,13 +95,12 @@
                                                         <input class="form-check-input" type="checkbox" id="checkAll" value="option">
                                                     </div>
                                                 </th>
-
-                                                <th class="sort" data-sort="customer_name">Customer</th>
+                                                <th class="sort" data-sort="fullName">Customer</th>
                                                 <th class="sort" data-sort="email">Email</th>
                                                 <th class="sort" data-sort="phone">Phone</th>
-                                                <th class="sort" data-sort="date">Joining Date</th>
+                                                <th class="sort" data-sort="createdAt">Joining Date</th>
                                                 <th class="sort" data-sort="status">Status</th>
-                                                <th class="sort" data-sort="action">Action</th>
+                                                <th >Action</th>
                                             </tr>
                                         </thead>
                                         <tbody class="list form-check-all">
@@ -113,14 +112,14 @@
                                                         </div>
                                                     </th>
                                                     <td class="id" style="display:none;"><a href="javascript:void(0);" class="fw-medium link-primary">#VZ2101</a></td>
-                                                    <td class="customer_name"><%= customer.fullName %></td>
+                                                    <td class="fullName"><%= customer.fullName %></td>
                                                     <td class="email"><%= customer.email %></td>
                                                     <td class="phone"><%= customer.phone %></td>
-                                                    <td class="date"><%= moment(customer.createdAt).format('YYYY-MM-DD') %></td>
+                                                    <td class="createdAt"><%= moment(customer.createdAt).format('YYYY-MM-DD') %></td>
                                                     <td class="status form-switch-md">
                                                         <!-- Base Switchs -->
-                                                        <div class="form-check border-danger form-check-success form-switch">
-                                                            <input class="form-check-input status-switch" data-value="<%= customer._id %>" type="checkbox" role="switch" id="flexSwitchCheckDefault" <% if (customer?.status === 'active') { %>checked<% } %>>
+                                                        <div class="form-check form-check-success form-switch">
+                                                            <input class="form-check-input status-switch" data-value="<%= customer._id %>" data-query="<%= query %>" type="checkbox" role="switch" id="flexSwitchCheckDefault" <% if (customer?.status === 'active') { %>checked<% } %>>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -154,19 +153,19 @@
                                         </div>
                                     <% } %>
                                 </div>
-                                <%= hasNextPages %>
-                                <% if (customers?.length > 0) { %>
+                                <% if (1==1) { %>
                                     <div class="d-flex justify-content-end">
                                         <div class="pagination-wrap hstack gap-2">
-                                            <a class="page-item pagination-prev disabled" href="#">
+                                            <a class="page-item pagination-prev <% if (!paginate.hasPreviousPages) { %>disabled<% } %>" href="<%= paginate.hasPreviousPages ? paginate.href(true) : 'javascript:void(0)' %>">
                                                 Previous
                                             </a>
                                             <ul class="pagination listjs-pagination mb-0">
-                                                <li class="active"><a href="" class="page">1</a></li>
-                                                <li class=""><a href="" class="page">2</a></li>
-                                                <li class=""><a href="" class="page">3</a></li>
+                                                <% pages.map( pageObj => { %>
+                                                    <li class="<% if (pageObj.number == page) { %>active<% } %>"><a href="<%= pageObj.url %>" class="page"><%= pageObj.number %></a></li>
+                                                    
+                                                <% }) %>
                                             </ul>
-                                            <a class="page-item pagination-next" href="#">
+                                            <a class="page-item pagination-next <% if (!paginate.hasNextPages(pageCount)) { %>disabled<% } %>" href="<%= paginate.hasNextPages(pageCount) ? paginate.href() : 'javascript:void(0)' %>">
                                                 Next
                                             </a>
                                         </div>

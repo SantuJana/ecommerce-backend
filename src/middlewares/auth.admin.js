@@ -9,6 +9,7 @@ const auth = (req, res, next) => {
         res.locals.email = admin.email
         res.locals.profileImage = admin.profileImage
         res.locals.moment = moment
+        res.locals.query = req._parsedOriginalUrl.search
         next();
     } else {
         res.redirect('/admin/auth/signin')
