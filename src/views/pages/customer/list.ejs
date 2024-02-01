@@ -95,11 +95,11 @@
                                                         <input class="form-check-input" type="checkbox" id="checkAll" value="option">
                                                     </div>
                                                 </th>
-                                                <th class="sort" data-sort="fullName">Customer</th>
-                                                <th class="sort" data-sort="email">Email</th>
-                                                <th class="sort" data-sort="phone">Phone</th>
-                                                <th class="sort" data-sort="createdAt">Joining Date</th>
-                                                <th class="sort" data-sort="status">Status</th>
+                                                <th class="sort" data-sort-index="<%= sortColumn === 'fullName' ? sortIndex : '1' %>" data-sort="fullName">Customer</th>
+                                                <th class="sort" data-sort-index="<%= sortColumn === 'email' ? sortIndex : '1' %>" data-sort="email">Email</th>
+                                                <th class="sort" data-sort-index="<%= sortColumn === 'phone' ? sortIndex : '1' %>" data-sort="phone">Phone</th>
+                                                <th class="sort" data-sort-index="<%= sortColumn === 'createdAt' ? sortIndex : '1' %>" data-sort="createdAt">Joining Date</th>
+                                                <th class="sort" data-sort-index="<%= sortColumn === 'status' ? sortIndex : '1' %>" data-sort="status">Status</th>
                                                 <th >Action</th>
                                             </tr>
                                         </thead>
@@ -119,13 +119,13 @@
                                                     <td class="status form-switch-md">
                                                         <!-- Base Switchs -->
                                                         <div class="form-check form-check-success form-switch">
-                                                            <input class="form-check-input status-switch" data-value="<%= customer._id %>" data-query="<%= query %>" type="checkbox" role="switch" id="flexSwitchCheckDefault" <% if (customer?.status === 'active') { %>checked<% } %>>
+                                                            <input class="form-check-input status-switch" data-value="<%= customer._id %>" data-query="<%= query %>" type="checkbox" role="switch" id="flexSwitchCheckDefault <%= customer._id %>" <% if (customer?.status === 'active') { %>checked<% } %>>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <ul class="list-inline hstack gap-2 mb-0">
                                                             <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                                                                <a href="#showModal" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                                                                <a href="#showModal" data-bs-toggle="modal" data-value="<%= customer._id %>" class="text-primary d-inline-block edit-item-btn">
                                                                     <i class="ri-pencil-fill fs-16"></i>
                                                                 </a>
                                                             </li>
@@ -134,7 +134,7 @@
                                                                     <i class="ri-delete-bin-5-fill fs-16"></i>
                                                                 </a>
                                                                 <form action="/admin/customer/delete" method="post" id="deleteForm_<%= customer._id %>">
-                                                                    <input type="text" name="id" id="" value="<%= customer._id %>" hidden>
+                                                                    <input type="text" name="id" id="<%= customer._id %>" value="<%= customer._id %>" hidden>
                                                                 </form>
                                                             </li>
                                                         </ul>
@@ -153,7 +153,7 @@
                                         </div>
                                     <% } %>
                                 </div>
-                                <% if (1==1) { %>
+                                <% if (customers?.length > 0) { %>
                                     <div class="d-flex justify-content-end">
                                         <div class="pagination-wrap hstack gap-2">
                                             <a class="page-item pagination-prev <% if (!paginate.hasPreviousPages) { %>disabled<% } %>" href="<%= paginate.hasPreviousPages ? paginate.href(true) : 'javascript:void(0)' %>">
@@ -179,46 +179,57 @@
                                             <h5 class="modal-title" id="exampleModalLabel"></h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
                                         </div>
-                                        <form class="tablelist-form" autocomplete="off">
+                                        <form class="tablelist-form needs-validation" autocomplete="off" action="" method="post" novalidate>
                                             <div class="modal-body">
                                                 <input type="hidden" id="id-field" />
 
                                                 <div class="mb-3" id="modal-id" style="display: none;">
                                                     <label for="id-field1" class="form-label">ID</label>
-                                                    <input type="text" id="id-field1" class="form-control" placeholder="ID" readonly />
+                                                    <input type="text" id="id-field1" name="id" class="form-control" placeholder="ID" readonly />
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label for="customername-field" class="form-label">Customer Name</label>
-                                                    <input type="text" id="customername-field" class="form-control" placeholder="Enter name" required />
-                                                    <div class="invalid-feedback">Please enter a customer name.</div>
+                                                    <label for="customerfirstname-field" class="form-label">Customer First Name</label>
+                                                    <input type="text" name="firstName" id="customerfirstname-field" class="form-control text-capitalize" placeholder="Enter first name" required />
+                                                    <div class="invalid-feedback">Please enter a customer first name.</div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="customerlastname-field" class="form-label">Customer Last Name</label>
+                                                    <input type="text" name="lastName" id="customerlastname-field" class="form-control text-capitalize" placeholder="Enter last name" required />
+                                                    <div class="invalid-feedback">Please enter a customer last name.</div>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="email-field" class="form-label">Email</label>
-                                                    <input type="email" id="email-field" class="form-control" placeholder="Enter email" required />
+                                                    <input type="email" name="email" id="email-field" class="form-control" placeholder="Enter email" required />
                                                     <div class="invalid-feedback">Please enter an email.</div>
+                                                </div>
+
+                                                <div class="mb-3 password-area">
+                                                    <label for="password-field" class="form-label">Password</label>
+                                                    <div class="position-relative auth-pass-inputgroup mb-3">
+                                                        <input type="password" name="password" class="form-control pe-5 password-input" placeholder="Enter password" id="password-input">
+                                                        <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                                                    </div>                                                    <div class="invalid-feedback">Please enter an password.</div>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="phone-field" class="form-label">Phone</label>
-                                                    <input type="text" id="phone-field" class="form-control" placeholder="Enter phone no." required />
+                                                    <input type="text" name="phone" id="phone-field" class="form-control" placeholder="Enter phone no." minlength="10" maxlength="10" required />
                                                     <div class="invalid-feedback">Please enter a phone.</div>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="date-field" class="form-label">Joining Date</label>
-                                                    <input type="date" id="date-field" class="form-control" data-provider="flatpickr" data-date-format="d M, Y" required placeholder="Select date" />
-                                                    <div class="invalid-feedback">Please select a date.</div>
                                                 </div>
 
                                                 <div>
                                                     <label for="status-field" class="form-label">Status</label>
-                                                    <select class="form-control" data-choices data-choices-search-false name="status-field" id="status-field"  required>
+                                                    <select class="form-select" name="status" id="status-field" value="inactive"  data-choices data-choices-search-false required>
                                                         <option value="">Status</option>
-                                                        <option value="Active">Active</option>
-                                                        <option value="Block">Block</option>
+                                                        <option value="active">Active</option>
+                                                        <option value="inactive">Inactive</option>
                                                     </select>
+                                                    <div class="invalid-feedback">
+                                                        Please select a status
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -246,5 +257,8 @@
     <!-- End Page-content -->
 </div>
 
+<script src="/assets/js/pages/form-validation.init.js"></script>
 <script src="/assets/js/pages/customer.js" ></script>
+<!-- password-addon init -->
+<script src="/assets/js/pages/password-addon.init.js"></script>
 <%- include('../../partials/footer') %>
