@@ -1,19 +1,13 @@
-$('#deleteRecordModal #delete-record').click(function(){
-    const dataId = $('.remove-item-btn').data('value')
-    $.ajax({
-        url: '',
-        headers:{
-            contentType: 'application/json'
-        },
-        data:{
-            id: dataId,
-        },
-        type: 'post',
-        success: () => {
-            console.log('success');
-        },
-        error: (error) => {
-            console.log('error: ', error.message);
-        }
-    })
+$('.remove-item-btn').click(function(){
+    const dataId = $(this).data('value')
+    $('#deleteRecordModal #delete-record').data('value', dataId)
 })
+
+$('#deleteRecordModal #delete-record').click(function(){
+    const idToBeDelete = $(this).data('value')
+    $(`#deleteForm_${idToBeDelete}`).submit()
+})
+
+// $('#deleteRecordModal').on('hidden-bs-modal', function(){
+//     $('#deleteRecordModal #delete-record').data('value', undefined)
+// })

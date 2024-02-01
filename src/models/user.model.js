@@ -20,6 +20,7 @@ userSchema = new mongoose.Schema(
             unique: true,
             required: true,
             minLength: 5,
+            set: (value) => value.toLowerCase(),
         },
         phone: {
             type: Number,
