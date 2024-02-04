@@ -603,13 +603,42 @@
                         </li>
                         <!-- customer -->
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="#customer" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="customer">
+                            <a class="nav-link menu-link customer-menu-link" href="#customer" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="customer">
                                 <i class="ri-map-pin-user-line"></i> <span data-key="t-customer">Customer</span>
                             </a>
                             <div class="collapse menu-dropdown" id="customer">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
-                                        <a href="/admin/customer" class="nav-link" data-key="t-list">List</a>
+                                        <a href="/admin/customer" data-menu="customer" class="nav-link" data-key="t-list">List</a>
+                                        <a href="/admin/customer/address" data-menu="customer" class="nav-link" data-key="t-list">Address</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!-- products -->
+                        <li class="nav-item">
+                            <a class="nav-link menu-link product-menu-link" href="#product" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="product">
+                                <i class="bx bxl-product-hunt"></i> <span data-key="t-product">Product</span>
+                            </a>
+                            <div class="collapse menu-dropdown" id="product">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a href="/admin/product" data-menu="product" class="nav-link" data-key="t-list">List</a>
+                                        <!-- <a href="/admin/product/address" data-menu="product" class="nav-link" data-key="t-list">Address</a> -->
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!-- orders -->
+                        <li class="nav-item">
+                            <a class="nav-link menu-link order-menu-link" href="#order" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="order">
+                                <i class="ri-shopping-cart-line"></i> <span data-key="t-order">Order</span>
+                            </a>
+                            <div class="collapse menu-dropdown" id="order">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a href="/admin/order" data-menu="order" class="nav-link" data-key="t-list">List</a>
+                                        <!-- <a href="/admin/order/address" data-menu="order" class="nav-link" data-key="t-list">Address</a> -->
                                     </li>
                                 </ul>
                             </div>
@@ -622,3 +651,6 @@
             <div class="sidebar-background"></div>
         </div>
         <!-- Left Sidebar End -->
+
+        <!-- javascript for header -->
+        <script src="/assets/js/header.js"></script>
